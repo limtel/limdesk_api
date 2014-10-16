@@ -58,10 +58,7 @@ ticket.close(content: 'its solved', type: :resolved)
 ticket.reopen
 ticket.close(content: 'spam', type: :rejected)
 
-ticket2 = LimdeskApi::Ticket.create (  title: "a ticket",
-                                    content: "client's probem",
-                                    reported_by: :mail, 
-                                    client_id: -1 )
+ticket2 = LimdeskApi::Ticket.create title: "a ticket", content: "client's probem", reported_by: :mail, client_id: -1
                                     
 # reported_by can be mail, phone, other, chat
 # client_id => -1 means "new anonymous clinet"
@@ -80,7 +77,7 @@ ticket2.title
 acts = LimdeskApi::Activity.all
 
 act = LimdeskApi::Activity.create( :content=>"client has logged into website",
-                                :client_id=>55 )
+                                   :client_id=>55 )
 ```
 
 
@@ -95,10 +92,10 @@ cls.first.name
 "John Smith"
 
 client = LimdeskApi::Client.create( 	:name =>"John Smith", 
-							    	:nippesel =>"15012406496",
-							    	:phone =>"223111789",
-							    	:email =>"email@example.com",
-							    	:adress =>"Plain Street 149 85-058 Warsaw" )
+                  							    	:nippesel =>"15012406496",
+                  							    	:phone =>"223111789",
+                  							    	:email =>"email@example.com",
+                  							    	:adress =>"Plain Street 149 85-058 Warsaw" )
 client.ok?
 true
 

@@ -22,6 +22,7 @@ module LimdeskApi
     @connection = Faraday.new(:url => ENDPOINT) do |faraday|
       faraday.response :json, :content_type => /\bjson$/
       faraday.adapter Faraday.default_adapter 
+      faraday.use Faraday::Response::Logger if @debug
     end
     @prefix = "/api/v#{@version}"
     return self
@@ -35,9 +36,13 @@ module LimdeskApi
     return @version = version
   end
 
+  def self.debug=(debug)
+    return @debug = debug
+  end
+
   def self.get_one(params)
     resp = @connection.get do |req|
-      req.url "#{@prefix}/#{Limdesk::KNOWN_OBJS[params[:object]]}/#{params[:id]}"
+      req.url "#{@prefix}/#{LimdeskApi::KNOWN_OBJS[params[:object]]}/#{params[:id]}"
       req.params[:key] = @key
     end
     case resp.status
@@ -54,7 +59,7 @@ module LimdeskApi
 
   def self.get_many(params)
     resp = @connection.get do |req|
-      req.url "#{@prefix}/#{Limdesk::KNOWN_OBJS[params[:object]]}"
+      req.url "#{@prefix}/#{LimdeskApi::KNOWN_OBJS[params[:object]]}"
       req.params[:key] = @key
       req.params[:page] = params[:page] if params[:page].to_i > 0
     end
@@ -62,10 +67,10 @@ module LimdeskApi
     when 200
       raise "LimdeskApiError" unless resp.body.kind_of?(Hash) && resp.body['status'] == "ok"
       raise "LimdeskApiError" unless resp.body['page'] && resp.body['total_pages']
-      raise "LimdeskApiError" unless resp.body[Limdesk::KNOWN_OBJS[params[:object]].to_s]
+      raise "LimdeskApiError" unless resp.body[LimdeskApi::KNOWN_OBJS[params[:object]].to_s]
       return {  :page=>resp.body['page'],
                 :total_pages=>resp.body['total_pages'],
-                :objects=>resp.body[Limdesk::KNOWN_OBJS[params[:object]].to_s] }
+                :objects=>resp.body[LimdeskApi::KNOWN_OBJS[params[:object]].to_s] }
     else
       raise "LimdeskApiErrorFatal"
     end
@@ -73,7 +78,7 @@ module LimdeskApi
 
   def self.create(params)
     resp = @connection.post do |req|
-      req.url "#{@prefix}/#{Limdesk::KNOWN_OBJS[params[:object]]}"
+      req.url "#{@prefix}/#{LimdeskApi::KNOWN_OBJS[params[:object]]}"
       req.params[:key] = @key
       req.body = params[:params].to_json
     end
@@ -101,7 +106,7 @@ module LimdeskApi
   end
 
   def self.update(method, params)
-    url = "#{@prefix}/#{Limdesk::KNOWN_OBJS[params[:object]]}/#{params[:id]}"
+    url = "#{@prefix}/#{LimdeskApi::KNOWN_OBJS[params[:object]]}/#{params[:id]}"
     url += "/#{params[:action]}" if params[:action]
     resp = @connection.send(method) do |req|
       req.url url
