@@ -51,14 +51,17 @@ ticket.title
 ticket.client.name
 "John Smith"
 
-ticket.answer(content: 'this is a private comment', answer_type: :priv)
-ticket.answer(content: 'dear customer, it is solved', answer_type: :pub)
+ticket.answer content: 'this is a private comment', answer_type: :priv
+ticket.answer content: 'dear customer, it is solved', answer_type: :pub
 
-ticket.close(content: 'its solved', type: :resolved)
+ticket.close content: 'its solved', type: :resolved 
 ticket.reopen
-ticket.close(content: 'spam', type: :rejected)
+ticket.close content: 'spam', type: :rejected
 
-ticket2 = LimdeskApi::Ticket.create title: "a ticket", content: "client's probem", reported_by: :mail, client_id: -1
+ticket2 = LimdeskApi::Ticket.create :title => "problem",
+                                    :content => "clients probem",
+                                    :reported_by => :mail,
+                                    :client_id => -1
                                     
 # reported_by can be mail, phone, other, chat
 # client_id => -1 means "new anonymous clinet"
@@ -76,10 +79,9 @@ ticket2.title
 
 acts = LimdeskApi::Activity.all
 
-act = LimdeskApi::Activity.create( :content=>"client has logged into website",
-                                   :client_id=>55 )
+act = LimdeskApi::Activity.create content: "client has logged into website",
+                                  client_id: 55 
 ```
-
 
 #### Clients
 
@@ -91,11 +93,11 @@ cls = LimdeskApi::Client.all
 cls.first.name
 "John Smith"
 
-client = LimdeskApi::Client.create( 	:name =>"John Smith", 
-                  							    	:nippesel =>"15012406496",
-                  							    	:phone =>"223111789",
-                  							    	:email =>"email@example.com",
-                  							    	:adress =>"Plain Street 149 85-058 Warsaw" )
+client = LimdeskApi::Client.create  name: "John Smith", 
+                                    nippesel: "15012406496",
+                                    phone: "223111789",
+                                    email: "email@example.com",
+                                    adress: "Plain Street 149 85-058 Warsaw"
 client.ok?
 true
 
@@ -114,7 +116,7 @@ client2.contacts.first
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/limdesk/fork )
+1. Fork it ( https://github.com/limtel/limdesk/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
