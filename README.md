@@ -66,8 +66,6 @@ ticket2 = LimdeskApi::Ticket.create :title => "problem",
 # reported_by can be mail, phone, other, chat
 # client_id => -1 means "new anonymous clinet"
                                     
-ticket2.ok?
-true
 ticket2.title
 "a ticket"
 							
@@ -98,9 +96,6 @@ client = LimdeskApi::Client.create  name: "John Smith",
                                     phone: "223111789",
                                     email: "email@example.com",
                                     adress: "Plain Street 149 85-058 Warsaw"
-client.ok?
-true
-
 client.delete!
 true
 

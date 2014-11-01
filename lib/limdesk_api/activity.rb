@@ -1,31 +1,28 @@
 module LimdeskApi
-
-  class Activity < RecursiveOpenStruct
-
+  # Limdesk Activity
+  class Activity < LimdeskObject
+    NOT_IMPLEMENTED = 'activity currently does not support this call'
+    # Creates a new Activity
+    #
+    # @param [Hash] params the options to create a activity with
+    # @option params [String] :content activity content
+    # @option params [String] :client_id client (optional)
+    #
+    # @return [LimdeskApi::Activity]
     def self.create(params)
-      response = LimdeskApi.create(:object=>:activity , :params=>params)
-      Activity.new response
+      super
     end
 
-    def self.all
-      query_options = { page: 1, object: :activity }
-      results = {}
-      activities = []
-      loop do
-        unless results[:total_pages].nil?
-          raise StopIteration if results[:total_pages] == results[:page]
-        end
-        results = LimdeskApi.get_many(query_options)
-        query_options[:page] += 1
-        activities+=results[:objects].map { |x| Activity.new x }
-      end
-      activities
+    def self.get(*)
+      fail Activity::NOT_IMPLEMENTED
     end
 
-    def ok?
-      error == true ? false : true
+    def refresh!
+      fail Activity::NOT_IMPLEMENTED
     end
 
+    def delete!
+      fail Activity::NOT_IMPLEMENTED
+    end
   end
-  
 end

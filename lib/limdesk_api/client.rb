@@ -1,44 +1,18 @@
 module LimdeskApi
-
-  class Client < RecursiveOpenStruct
-
-    def self.get(id)
-      response = LimdeskApi.get_one(:object=>:client, :id=>id)
-      response ? Client.new(response) : nil
-    end
-
+  # Client
+  class Client < LimdeskObject
+    # Creates a new Client
+    #
+    # @param [Hash] params the options to create a client with
+    # @option params [String] :name client's name
+    # @option params [String] :nippesel unique ID like VATID, passport
+    # @option params [String] :phone client's phone number
+    # @option params [String] :email client's email address
+    # @option params [String] :address client's personal/company address
+    #
+    # @return [LimdeskApi::Client]
     def self.create(params)
-      response = LimdeskApi.create(:object=>:client, :params=>params)
-      Client.new response
+      super
     end
-
-    def self.all
-      query_options = { page: 1, object: :client }
-      results = {}
-      clients = []
-      loop do
-        unless results[:total_pages].nil?
-          raise StopIteration if results[:total_pages] == results[:page]
-        end
-        results = LimdeskApi.get_many(query_options)
-        query_options[:page] += 1
-        clients+=results[:objects].map { |x| Client.new x }
-      end
-      clients
-    end
-
-    def ok?
-      error == true ? false : true
-    end
-
-    def refresh!
-      self.marshal_load(Client.get(self['id']).marshal_dump)
-    end
-
-    def delete!
-      response = LimdeskApi.delete( id: self.id, object: :client )
-      return not(response[:error])
-    end
-
   end
 end
