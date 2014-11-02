@@ -65,7 +65,7 @@ ticket2 = LimdeskApi::Ticket.create :title => "problem",
                                     :reported_by => :mail,
                                     :client_id => -1
                                     
-# reported_by can be mail, phone, other, chat
+# reported_by can be :mail, :phone, :other, :chat
 # client_id => -1 means "new anonymous clinet"
                                     
 ticket2.title
