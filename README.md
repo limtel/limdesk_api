@@ -1,5 +1,7 @@
 # LimdeskApi
 
+[![Code Climate](https://codeclimate.com/github/limtel/limdesk_api/badges/gpa.svg)](https://codeclimate.com/github/limtel/limdesk_api)
+
 ## Installation
 
 Add this line to your application's Gemfile:

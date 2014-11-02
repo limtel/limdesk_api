@@ -48,9 +48,16 @@ module LimdeskApi
     @debug = debug
   end
 
-  def self.check_get_one_response(resp)
-    fail 'LimdeskApiError' if !resp.body.is_a?(Hash) ||
-                              resp.body['status'] != 'ok'
+  def self.generate_url(params)
+    url = [@prefix, LimdeskApi::KNOWN_OBJS[params[:object]]]
+    url.push params[:id] if params[:id]
+    url.push params[:action] if params[:action]
+    url.join('/')
+  end
+
+  def self.check_get_one_response(body)
+    fail 'LimdeskApiError' if !body.is_a?(Hash) ||
+                              body['status'] != 'ok'
   end
 
   # get a single LimdeskAPI object
@@ -60,14 +67,14 @@ module LimdeskApi
   # @option params [Integer] :id requested object's id
   def self.get_one(params)
     resp = @connection.get do |req|
-      req.url "#{@prefix}/#{LimdeskApi::KNOWN_OBJS[params[:object]]}/#{params[:id]}"
+      req.url generate_url params
       req.params[:key] = @key
     end
     case resp.status
     when 200
-      check_get_one_response(resp)
-      return nil if resp.body[params[:object].to_s].nil?
-      resp.body[params[:object].to_s]
+      body = resp.body
+      check_get_one_response(body)
+      body[params[:object].to_s]
     when 404
       nil
     else
@@ -75,12 +82,12 @@ module LimdeskApi
     end
   end
 
-  def self.check_get_page_response(resp,obj)
-    fail 'LimdeskApiError' if !resp.body.is_a?(Hash) ||
-                              resp.body['status'] != 'ok' ||
-                              resp.body['page'].nil? ||
-                              resp.body['total_pages'].nil? ||
-                              resp.body[obj.to_s].nil?
+  def self.check_get_page_response(body, obj)
+    fail 'LimdeskApiError' if !body.is_a?(Hash) ||
+                              body['status'] != 'ok' ||
+                              body['page'].nil? ||
+                              body['total_pages'].nil? ||
+                              body[obj.to_s].nil?
   end
 
   # get a page of LimdeskAPI object
@@ -89,17 +96,19 @@ module LimdeskApi
   # @option params [Symbol] :object one of LimdeskApi::KNOWN_OBJS
   # @option params [Integer] :page requested page
   def self.get_page(params)
+    obj = LimdeskApi::KNOWN_OBJS[params[:object]]
     resp = @connection.get do |req|
-      req.url "#{@prefix}/#{LimdeskApi::KNOWN_OBJS[params[:object]]}"
+      req.url generate_url params
       req.params[:key] = @key
       req.params[:page] = params[:page]
     end
     case resp.status
     when 200
-      check_get_page_response(resp, LimdeskApi::KNOWN_OBJS[params[:object]])
-      {  page: resp.body['page'],
-         total_pages: resp.body['total_pages'],
-         objects: resp.body[LimdeskApi::KNOWN_OBJS[params[:object]].to_s] }
+      body = resp.body
+      check_get_page_response(body, obj)
+      {  page: body['page'],
+         total_pages: body['total_pages'],
+         objects: body[obj.to_s] }
     else
       fail 'LimdeskApiErrorFatal'
     end
@@ -120,11 +129,11 @@ module LimdeskApi
     data
   end
 
-  def self.check_create_response(resp, obj)
-    fail 'LimdeskApiError' if !resp.body.is_a?(Hash) ||
-                              resp.body['status'].nil? ||
-                              resp.body['status'] == 'error' ||
-                              resp.body[obj.to_s].nil?
+  def self.check_create_response(body, obj)
+    fail 'LimdeskApiError' if !body.is_a?(Hash) ||
+                              body['status'].nil? ||
+                              body['status'] == 'error' ||
+                              body[obj.to_s].nil?
   end
 
   # create LimdeskAPI object
@@ -132,22 +141,23 @@ module LimdeskApi
   # @param [Hash] params new object data
   def self.create(params)
     resp = @connection.post do |req|
-      req.url "#{@prefix}/#{LimdeskApi::KNOWN_OBJS[params[:object]]}"
+      req.url generate_url params
       req.params[:key] = @key
       req.body = params[:params].to_json
     end
     case resp.status
     when 200
-      check_create_response(resp, params[:object])
-      resp.body[params[:object].to_s]
+      body = resp.body
+      check_create_response(body, params[:object])
+      body[params[:object].to_s]
     else
       fail 'LimdeskApiErrorFatal'
     end
   end
 
-  def self.check_update_resonse(resp)
-    fail 'LimdeskApiError' if !resp.body.is_a?(Hash) ||
-                              resp.body['status'].nil?
+  def self.check_update_resonse(body)
+    fail 'LimdeskApiError' if !body.is_a?(Hash) ||
+                              body['status'].nil?
   end
 
   # update/delete a LimdeskAPI object
@@ -155,17 +165,16 @@ module LimdeskApi
   # @param [Symobol] method a http method, one of :put, :post, :delete
   # @param [Hash] params object data, if required
   def self.update(method, params)
-    url = "#{@prefix}/#{LimdeskApi::KNOWN_OBJS[params[:object]]}/#{params[:id]}"
-    url += "/#{params[:action]}" if params[:action]
     resp = @connection.send(method) do |req|
-      req.url url
+      req.url generate_url params
       req.params[:key] = @key
       req.body = params[:params].to_json
     end
     case resp.status
     when 200
-      check_update_resonse(resp)
-      resp.body['status'] == 'ok' ? true : false
+      body = resp.body
+      check_update_resonse(body)
+      body['status'] == 'ok' ? true : false
     else
       fail 'LimdeskApiErrorFatal'
     end

@@ -4,7 +4,7 @@ module LimdeskApi
     NOT_IMPLEMENTED = 'activity currently does not support this call'
     # Creates a new Activity
     #
-    # @param [Hash] params the options to create a activity with
+    # @param [Hash] params the options to create an activity with
     # @option params [String] :content activity content
     # @option params [String] :client_id client (optional)
     #
