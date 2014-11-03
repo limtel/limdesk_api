@@ -124,7 +124,7 @@ module LimdeskApi
       query_options[:page] += 1
       results = LimdeskApi.get_page(query_options)
       data += results[:objects]
-      break if results[:total_pages] == results[:page]
+      break if results[:total_pages] == results[:page] || results[:page] == 0
     end
     data
   end

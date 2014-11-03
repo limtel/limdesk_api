@@ -106,6 +106,31 @@ client2.contacts.first
 
 ```
 
+#### Sales
+
+```ruby
+
+sales=LimdeskApi::Sale.all
+
+sale = sales.first
+
+sale.name
+"Hosting service 1yr"
+
+sale.delete!
+true
+
+sale2 = LimdeskApi::Sale.create  client_id: 65464,
+                                 name: "Shoes",
+                                 price: 99.99,
+                                 amount: 1,
+                                 sold: "2014-10-20 20:00:00"
+
+sale2.client.name
+"John Smith"
+
+```
+
 ## TODO
 
 * tests
