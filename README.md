@@ -69,7 +69,7 @@ ticket2 = LimdeskApi::Ticket.create :title => "problem",
 # client_id => -1 means "new anonymous clinet"
                                     
 ticket2.title
-"a sample ticket"
+"sample ticket 2"
 							
 ```
 
