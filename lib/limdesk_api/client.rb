@@ -15,16 +15,26 @@ module LimdeskApi
       super
     end
 
+    # Gets a Client by property
+    #
+    # @param [String] action search type
+    # @param [String] query search data
+    #
+    # @return [LimdeskApi::Client]
+    def self.get_by(action, query)
+      response = LimdeskApi.get_one object: object_symbol,
+                                    action: action,
+                                    query: query
+      response ? new(response) : nil
+    end
+
     # Gets a Client by e-mail
     #
     # @param [String] email find by e-mail
     #
     # @return [LimdeskApi::Client]
     def self.get_by_email(email)
-      response = LimdeskApi.get_one object: object_symbol,
-                                    action: 'get_by_email',
-                                    query: email
-      response ? new(response) : nil
+      get_by('get_by_email', email)
     end
 
     # Gets a Client by phone
@@ -33,10 +43,7 @@ module LimdeskApi
     #
     # @return [LimdeskApi::Client]
     def self.get_by_phone(phone)
-      response = LimdeskApi.get_one object: object_symbol,
-                                    action: 'get_by_phone',
-                                    query: phone
-      response ? new(response) : nil
+      get_by('get_by_phone', phone)
     end
 
     # updates a client
