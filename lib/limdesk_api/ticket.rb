@@ -37,7 +37,7 @@ module LimdeskApi
     # Refreshes the object from the server
     # @return [LimdeskApi::Ticket]
     def refresh!
-      self.marshal_load(Ticket.get(self['number']).marshal_dump)
+      marshal_load(Ticket.get(self['number']).marshal_dump)
     end
 
     # Closes a ticket
@@ -66,7 +66,7 @@ module LimdeskApi
     # @return [Boolean]
     def reopen
       response = LimdeskApi.put(
-        id: self.number,
+        id: number,
         object: :ticket,
         action: :reopen,
         params: {})
@@ -85,7 +85,7 @@ module LimdeskApi
       fail 'BadAnswerType' unless Ticket::ANSWER_TYPES.keys.include?(params[:answer_type])
       params['type'] = Ticket::ANSWER_TYPES[params.delete(:answer_type)]
       response = LimdeskApi.post_simple(
-        id: self.number,
+        id: number,
         object: :ticket,
         action: :answer,
         params: params)

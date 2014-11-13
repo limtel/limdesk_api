@@ -69,6 +69,7 @@ module LimdeskApi
     resp = @connection.get do |req|
       req.url generate_url params
       req.params[:key] = @key
+      req.params[:query] = params[:query] if params[:query]
     end
     case resp.status
     when 200
@@ -181,14 +182,14 @@ module LimdeskApi
   end
 
   def self.put(params)
-    self.update(:put, params)
+    update(:put, params)
   end
 
   def self.post_simple(params)
-    self.update(:post, params)
+    update(:post, params)
   end
 
   def self.delete(params)
-    self.update(:delete, params)
+    update(:delete, params)
   end
 end

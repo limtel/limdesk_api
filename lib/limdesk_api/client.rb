@@ -14,5 +14,40 @@ module LimdeskApi
     def self.create(params)
       super
     end
+
+    # Gets a Client by e-mail
+    #
+    # @param [String] email find by e-mail
+    #
+    # @return [LimdeskApi::Client]
+    def self.get_by_email(email)
+      response = LimdeskApi.get_one object: object_symbol,
+                                    action: 'get_by_email',
+                                    query: email
+      response ? new(response) : nil
+    end
+
+    # Gets a Client by phone
+    #
+    # @param [String] phone find by phone
+    #
+    # @return [LimdeskApi::Client]
+    def self.get_by_phone(phone)
+      response = LimdeskApi.get_one object: object_symbol,
+                                    action: 'get_by_phone',
+                                    query: phone
+      response ? new(response) : nil
+    end
+
+    # updates a client
+    #
+    # @param [Hash] params new client data
+    #
+    # @return [LimdeskApi::Client]
+    def update(params)
+      LimdeskApi.put object: object_symbol,
+                     params: params,
+                     id: id
+    end
   end
 end

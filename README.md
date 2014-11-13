@@ -18,9 +18,9 @@ Or install it yourself as:
 
 ## Usage
 
-This gem will allow you to interact with Limdesk API. [Limdesk.com](http://limdesk.com) is a lightweight, multichannel customer support solution. 
+This gem will allow you to interact with Limdesk API. [Limdesk.com](http://limdesk.com) is a lightweight, multichannel customer support solution.
 
-API is available to free and premium users. You can generate your APIKEY in Settings/Integration/API section. 
+API is available to free and premium users. You can generate your APIKEY in Settings/Integration/API section.
 
 This gem wrappes Limdesk API into OpenStruct (RecursiveOpenStruct) objects. For more information about API check the [official docs](http://help.limdesk.com/en/category/458/API_documentation). Current API covers basic, most common actions. More advanced version is currenty under development.
 
@@ -56,7 +56,7 @@ ticket.client.name
 ticket.answer content: 'this is a private comment', answer_type: :priv
 ticket.answer content: 'dear customer, it is solved', answer_type: :pub
 
-ticket.close content: 'its solved', type: :resolved 
+ticket.close content: 'its solved', type: :resolved
 ticket.reopen
 ticket.close content: 'spam', type: :rejected
 
@@ -64,13 +64,13 @@ ticket2 = LimdeskApi::Ticket.create :title => "problem",
                                     :content => "clients probem",
                                     :reported_by => :mail,
                                     :client_id => -1
-                                    
+
 # reported_by can be :mail, :phone, :other, :chat
 # client_id => -1 means "new anonymous clinet"
-                                    
+
 ticket2.title
 "sample ticket 2"
-							
+
 ```
 
 #### Activities
@@ -80,7 +80,7 @@ ticket2.title
 acts = LimdeskApi::Activity.all
 
 act = LimdeskApi::Activity.create content: "client has logged into website",
-                                  client_id: 55 
+                                  client_id: 55
 ```
 
 #### Clients
@@ -93,17 +93,26 @@ cls = LimdeskApi::Client.all
 cls.first.name
 "John Smith"
 
-client = LimdeskApi::Client.create  name: "John Smith", 
+client = LimdeskApi::Client.create  name: "John Smith",
                                     nippesel: "15012406496",
                                     phone: "223111789",
                                     email: "email@example.com",
-                                    adress: "Plain Street 149 85-058 Warsaw"
+                                    address: "Plain Street 149 85-058 Warsaw"
 client.delete!
 true
 
 client2 = LimdeskApi::Client.get(55)
 client2.contacts.first
 
+client2.update name: "John Smith 2",
+               nippesel: "123",
+               phone: "11111",
+               email: "emailnew@example.com",
+               address: "Plain Street 149 85-058 Warsaw"
+true
+
+client3 = LimdeskApi::Client.get_by_email('adam@example.com')
+client4 = LimdeskApi::Client.get_by_phone('+48897228989')
 ```
 
 #### Sales

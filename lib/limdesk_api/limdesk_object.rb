@@ -10,8 +10,8 @@ module LimdeskApi
     # @return [LimdeskApi::Client]
     # @return [LimdeskApi::Sale]
     def self.get(id)
-      response = LimdeskApi.get_one(object: self.object_symbol, id: id)
-      response ? self.new(response) : nil
+      response = LimdeskApi.get_one(object: object_symbol, id: id)
+      response ? new(response) : nil
     end
 
     # Creates an object by LimdeskAPI
@@ -22,8 +22,8 @@ module LimdeskApi
     # @return [LimdeskApi::Client]
     # @return [LimdeskApi::Sale]
     def self.create(params)
-      response = LimdeskApi.create(object: self.object_symbol, params: params)
-      self.new response
+      response = LimdeskApi.create(object: object_symbol, params: params)
+      new response
     end
 
     # Gets all objects of a type from LimdeskAPI
@@ -33,13 +33,13 @@ module LimdeskApi
     # @return [Array<LimdeskApi::Sale>]
     # @return [Array<LimdeskApi::Activity>]
     def self.all
-      LimdeskApi.get_all(self.object_symbol).map { |obj| self.new obj }
+      LimdeskApi.get_all(object_symbol).map { |obj| new obj }
     end
 
     # Helper - get class name as a symbol
     # @return [Symbol]
     def self.object_symbol
-      self.name.downcase.split(':').last.to_sym
+      name.downcase.split(':').last.to_sym
     end
 
     # Force object to refresh itself from LimdeskAPI
@@ -48,7 +48,7 @@ module LimdeskApi
     # @return [LimdeskApi::Client]
     # @return [LimdeskApi::Sale]
     def refresh!
-      self.marshal_load(self.class.get(self['id']).marshal_dump)
+      marshal_load(self.class.get(self['id']).marshal_dump)
     end
 
     # Delete an object by LimdeskAPI
