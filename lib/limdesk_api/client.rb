@@ -46,6 +46,15 @@ module LimdeskApi
       get_by('get_by_phone', phone)
     end
 
+    # Gets a Client by outside_client_id
+    #
+    # @param [String] outside_client_id find by outside_client_id
+    #
+    # @return [LimdeskApi::Client]
+    def self.get_by_outside_client_id(outside_client_id)
+      get_by('get_by_outside_id', outside_client_id)
+    end
+
     # updates a client
     #
     # @param [Hash] params new client data
