@@ -114,6 +114,7 @@ true
 client3 = LimdeskApi::Client.get_by_email('adam@example.com')
 client4 = LimdeskApi::Client.get_by_phone('+48897228989')
 client4 = LimdeskApi::Client.get_by_outside_client_id('1234')
+client5 = LimdeskApi::Client.get_by_nippesel('7393792360')
 ```
 
 #### Sales

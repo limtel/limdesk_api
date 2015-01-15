@@ -46,6 +46,16 @@ module LimdeskApi
       get_by('get_by_phone', phone)
     end
 
+    # Gets a Client by nippesel
+    # (it's taxid, document_id or other government issued unique id number)
+    #
+    # @param [String] phone find by phone
+    #
+    # @return [LimdeskApi::Client]
+    def self.get_by_nippesel(nippesel)
+      get_by('get_by_nippesel', nippesel)
+    end
+
     # Gets a Client by outside_client_id
     #
     # @param [String] outside_client_id find by outside_client_id
