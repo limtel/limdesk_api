@@ -8,6 +8,7 @@ require 'limdesk_api/client'
 require 'limdesk_api/activity'
 require 'limdesk_api/ticket'
 require 'limdesk_api/sale'
+require 'limdesk_api/contactperson'
 
 # LideskAPI Warapper
 # Limdesk.com is a multichannel, web-based customer support solution.
@@ -20,7 +21,8 @@ module LimdeskApi
     ticket: :tickets,
     activity: :activities,
     client: :clients,
-    sale: :sales
+    sale: :sales,
+    contactperson: :contactpersons
   }
 
   # @example configure API access

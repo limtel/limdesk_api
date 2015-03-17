@@ -136,10 +136,27 @@ sale2 = LimdeskApi::Sale.create  client_id: 65464,
                                  price: 99.99,
                                  amount: 1,
                                  sold: "2014-10-20 20:00:00"
+                                 create_ticket: true
 
 sale2.client.name
 "John Smith"
 
+```
+
+#### Contact Persons
+
+```ruby
+
+cp=LimdeskApi::Contactperson.create client_id: 338425,
+                                    name: "Mr Smith",
+                                    email: "ms@example.com",
+                                    phone: "123456789"
+
+cp.update email: "ms1@example.com"
+
+cp.refresh!
+
+cp.delete!
 ```
 
 ## TODO

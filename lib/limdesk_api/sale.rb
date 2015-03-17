@@ -9,7 +9,7 @@ module LimdeskApi
     # @option params [Float] :price price of one item
     # @option params [DateTime] :sold sales date
     # @option params [DateTime] :expire expiration date (time-limted services)
-    #
+    # @option params [Boolean] :create_ticket create a new ticket with this sale
     # @return [LimdeskApi::Sale]
     def self.create(params)
       super

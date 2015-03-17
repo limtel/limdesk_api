@@ -21,6 +21,7 @@ module LimdeskApi
     # @return [LimdeskApi::Ticket]
     # @return [LimdeskApi::Client]
     # @return [LimdeskApi::Sale]
+    # @return [LimdeskApi::Contactperson]
     def self.create(params)
       response = LimdeskApi.create(object: object_symbol, params: params)
       new response
@@ -47,6 +48,7 @@ module LimdeskApi
     # @return [LimdeskApi::Ticket]
     # @return [LimdeskApi::Client]
     # @return [LimdeskApi::Sale]
+    # @return [LimdeskApi::Contactperson]
     def refresh!
       marshal_load(self.class.get(self['id']).marshal_dump)
     end
