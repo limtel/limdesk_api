@@ -34,6 +34,13 @@ module LimdeskApi
       super
     end
 
+    # Gets tickets from LimdeskAPI
+    #
+    # @return [Array<LimdeskApi::Ticket>]
+    def self.all(status = nil)
+      LimdeskApi.get_all(object_symbol, status: status).map { |obj| new obj }
+    end
+
     # Refreshes the object from the server
     # @return [LimdeskApi::Ticket]
     def refresh!

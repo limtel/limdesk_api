@@ -42,6 +42,11 @@ tickets = LimdeskApi::Ticket.all
 tickets.count
 63
 
+closed_tickets = LimdeskApi::Ticket.all(:closed)
+new_tickets = LimdeskApi::Ticket.all(:new)
+tickets_with_new_messages = LimdeskApi::Ticket.all(:new_messages)
+open_ticktes = LimdeskApi::Ticket.all(:open)
+
 tickets.first.title
 "Hello World"
 

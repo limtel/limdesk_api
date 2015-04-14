@@ -29,7 +29,6 @@ module LimdeskApi
 
     # Gets all objects of a type from LimdeskAPI
     #
-    # @return [Array<LimdeskApi::Ticket>]
     # @return [Array<LimdeskApi::Client>]
     # @return [Array<LimdeskApi::Sale>]
     # @return [Array<LimdeskApi::Activity>]

@@ -104,6 +104,7 @@ module LimdeskApi
       req.url generate_url params
       req.params[:key] = @key
       req.params[:page] = params[:page]
+      req.params[:status] = params[:status] if params[:status]
     end
     case resp.status
     when 200
@@ -119,9 +120,11 @@ module LimdeskApi
 
   # get all LimdeskAPI objects of a type
   #
-  # @param [Symbol] object_name t one of LimdeskApi::KNOWN_OBJS
-  def self.get_all(object_name)
+  # @param [Symbol] object_name one of LimdeskApi::KNOWN_OBJS
+  # @param [Hash] params additional query params
+  def self.get_all(object_name, params = {})
     query_options = { page: 0, object: object_name }
+    query_options.merge! params
     data = []
     loop do
       query_options[:page] += 1
